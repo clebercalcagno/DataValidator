@@ -1,4 +1,7 @@
 <?php
+
+namespace Validator;
+
 /**
  * Class for validation of data
  *
@@ -6,9 +9,7 @@
  * @version 1.0
  * @link https://github.com/rafaelwendel/DataValidator/
  */
-namespace validator;
-
-class Data_Validator {
+class Validator {
 
     protected $_data     = array();
     protected $_errors   = array();
@@ -31,7 +32,7 @@ class Data_Validator {
      * @access public
      * @param $name String The name of data
      * @param $value Mixed The value of data
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function set($name, $value){
         $this->_data['name'] = $name;
@@ -152,7 +153,7 @@ class Data_Validator {
     /**
      * Verify if the current data is not null
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_required(){
         if (empty ($this->_data['value'])){
@@ -167,7 +168,7 @@ class Data_Validator {
      * @access public
      * @param Int $length The value for compare
      * @param Boolean $inclusive [optional] Include the lenght in the comparison
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function min_length($length, $inclusive = false){
         $verify = ($inclusive === true ? strlen($this->_data['value']) >= $length : strlen($this->_data['value']) > $length);
@@ -183,7 +184,7 @@ class Data_Validator {
      * @access public
      * @param Int $length The value for compare
      * @param Boolean $inclusive [optional] Include the lenght in the comparison
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function max_length($length, $inclusive = false){
         $verify = ($inclusive === true ? strlen($this->_data['value']) <= $length : strlen($this->_data['value']) < $length);
@@ -199,7 +200,7 @@ class Data_Validator {
      * @access public
      * @param Int $min The minimum value for compare
      * @param Int $max The maximum value for compare
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function between_length($min, $max){
         if(strlen($this->_data['value']) < $min || strlen($this->_data['value']) > $max){
@@ -214,7 +215,7 @@ class Data_Validator {
      * @access public
      * @param Int $value The value for compare
      * @param Boolean $inclusive [optional] Include the value in the comparison
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function min_value($value, $inclusive = false){
         $verify = ($inclusive === true ? !is_numeric($this->_data['value']) || $this->_data['value'] >= $value : !is_numeric($this->_data['value']) || $this->_data['value'] > $value);
@@ -230,7 +231,7 @@ class Data_Validator {
      * @access public
      * @param Int $value The value for compare
      * @param Boolean $inclusive [optional] Include the value in the comparison
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function max_value($value, $inclusive = false){
         $verify = ($inclusive === true ? !is_numeric($this->_data['value']) || $this->_data['value'] <= $value : !is_numeric($this->_data['value']) || $this->_data['value'] < $value);
@@ -246,7 +247,7 @@ class Data_Validator {
      * @access public
      * @param Int $min_value The minimum value for compare
      * @param Int $max_value The maximum value for compare
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function between_values($min_value, $max_value){
         if(!is_numeric($this->_data['value']) || (($this->_data['value'] < $min_value || $this->_data['value'] > $max_value ))){
@@ -259,7 +260,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid email
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_email(){
         if (filter_var($this->_data['value'], FILTER_VALIDATE_EMAIL) === false) {
@@ -272,7 +273,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid URL
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_url(){
         if (filter_var($this->_data['value'], FILTER_VALIDATE_URL) === false) {
@@ -285,10 +286,12 @@ class Data_Validator {
     /**
      * Verify if the current data is a slug
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_slug(){
         $verify = true;
+
+        $input = $this->_data['value'];
 
         if (strstr($input, '--')) {
             $verify = false;
@@ -309,7 +312,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a numeric value
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_num(){
         if (!is_numeric($this->_data['value'])){
@@ -322,7 +325,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a integer value
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_integer(){
         if (!is_numeric($this->_data['value']) && (int) $this->_data['value'] != $this->_data['value']){
@@ -335,7 +338,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a float value
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_float(){
         if (!is_float(filter_var($this->_data['value'], FILTER_VALIDATE_FLOAT))){
@@ -348,7 +351,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a string value
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_string(){
         if(!is_string($this->_data['value'])){
@@ -361,7 +364,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a boolean value
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_boolean(){
         if(!is_bool($this->_data['value'])){
@@ -374,7 +377,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a object
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_obj(){
         if(!is_object($this->_data['value'])){
@@ -388,7 +391,7 @@ class Data_Validator {
      * Verify if the current data is a instance of the determinate class
      * @access public
      * @param String $class The class for compare
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_instance_of($class){
         if(!($this->_data['value'] instanceof $class)){
@@ -401,7 +404,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a array
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_arr(){
         if(!is_array($this->_data['value'])){
@@ -414,7 +417,7 @@ class Data_Validator {
     /**
      * Verify if the current parameter it is a directory
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_directory(){
         $verify = is_string($this->_data['value']) && is_dir($this->_data['value']);
@@ -430,7 +433,7 @@ class Data_Validator {
      * @access public
      * @param String $value The value for compare
      * @param Boolean $identical [optional] Identical?
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_equals($value, $identical = false){
         $verify = ($identical === true ? $this->_data['value'] === $value : strtolower($this->_data['value']) == strtolower($value));
@@ -446,7 +449,7 @@ class Data_Validator {
      * @access public
      * @param String $value The value for compare
      * @param Boolean $identical [optional] Identical?
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_not_equals($value, $identical = false){
         $verify = ($identical === true ? $this->_data['value'] !== $value : strtolower($this->_data['value']) != strtolower($value));
@@ -460,7 +463,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid CPF
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_cpf(){
         $verify = true;
@@ -494,7 +497,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid CNPJ
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_cnpj(){
         $verify = true;
@@ -527,7 +530,7 @@ class Data_Validator {
      * @access public
      * @param Mixed $values One array or String with valids values
      * @param Mixed $separator [optional] If $values as a String, pass the separator of values (ex: , - | )
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function contains($values, $separator = false){
         if(!is_array($values)){
@@ -551,7 +554,7 @@ class Data_Validator {
      * @access public
      * @param Mixed $values One array or String with valids values
      * @param Mixed $separator [optional] If $values as a String, pass the separator of values (ex: , - | )
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function not_contains($values, $separator = false){
         if(!is_array($values)){
@@ -573,7 +576,7 @@ class Data_Validator {
     /**
      * Verify if the current data is loweracase
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_lowercase(){
         if($this->_data['value'] !== mb_strtolower($this->_data['value'], mb_detect_encoding($this->_data['value']))){
@@ -586,7 +589,7 @@ class Data_Validator {
     /**
      * Verify if the current data is uppercase
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_uppercase(){
         if($this->_data['value'] !== mb_strtoupper($this->_data['value'], mb_detect_encoding($this->_data['value']))){
@@ -600,7 +603,7 @@ class Data_Validator {
      * Verify if the current data is multiple of the parameter
      * @access public
      * @param Int $value The value for comparison
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_multiple($value){
         if($value == 0){
@@ -620,7 +623,7 @@ class Data_Validator {
      * Verify if the current data is a positive number
      * @access public
      * @param Boolean $inclusive [optional] Include 0 in comparison?
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_positive($inclusive = false){
         $verify = ($inclusive === true ? ($this->_data['value'] >= 0) : ($this->_data['value'] > 0));
@@ -635,7 +638,7 @@ class Data_Validator {
      * Verify if the current data is a negative number
      * @access public
      * @param Boolean $inclusive [optional] Include 0 in comparison?
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_negative($inclusive = false){
         $verify = ($inclusive === true ? ($this->_data['value'] <= 0) : ($this->_data['value'] < 0));
@@ -650,11 +653,11 @@ class Data_Validator {
      * Verify if the current data is a valid Date
      * @access public
      * @param String $format [optional] The Date format
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_date($format = null){
         $verify = true;
-        if($this->_data['value'] instanceof DateTime){
+        if($this->_data['value'] instanceof \DateTime){
             return $this;
         }
         elseif(!is_string($this->_data['value'])){
@@ -667,7 +670,7 @@ class Data_Validator {
             }
         }
         if($verify){
-            $date_from_format = DateTime::createFromFormat($format, $this->_data['value']);
+            $date_from_format = \DateTime::createFromFormat($format, $this->_data['value']);
             $verify = $date_from_format && $this->_data['value'] === date($format, $date_from_format->getTimestamp());
         }
         if(!$verify){
@@ -695,7 +698,7 @@ class Data_Validator {
      * Verify if the current data contains just alpha caracters
      * @access public
      * @param String $additional [optional] The extra caracters
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_alpha($additional = ''){
         $string_format = '/^(\s|[a-zA-Z])*$/';
@@ -710,7 +713,7 @@ class Data_Validator {
      * Verify if the current data contains just alpha-numerics caracters
      * @access public
      * @param String $additional [optional] The extra caracters
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_alpha_num($additional = ''){
         $string_format = '/^(\s|[a-zA-Z0-9])*$/';
@@ -724,7 +727,7 @@ class Data_Validator {
     /**
      * Verify if the current data no contains white spaces
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function no_whitespaces(){
         $verify = is_null($this->_data['value']) || preg_match('#^\S+$#', $this->_data['value']);
@@ -738,7 +741,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid Phone Number (8 or 9 digits)
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_phone(){
         $verify = preg_match('/^(\(0?\d{2}\)\s?|0?\d{2}[\s.-]?)\d{4,5}[\s.-]?\d{4}$/', $this->_data['value']);
@@ -752,7 +755,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid License Plate (Brazil)
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_plate(){
         $verify = preg_match('/^[A-Z]{3}\-[0-9]{4}$/', $this->_data['value']);
@@ -766,7 +769,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid IP
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_ip(){
         if (filter_var($this->_data['value'], FILTER_VALIDATE_IP) === false) {
@@ -779,7 +782,7 @@ class Data_Validator {
     /**
      * Verify if the current data is a valid Zip Code (Brazil)
      * @access public
-     * @return Data_Validator The self instance
+     * @return Validator The self instance
      */
     public function is_zipCode(){
         $verify = preg_match('/^[0-9]{5}-[0-9]{3}$/', $this->_data['value']);
